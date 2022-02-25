@@ -65,10 +65,15 @@ const authorSchema = new mongoose.Schema({
         enum: ['admin', 'author'],
         default: 'author'
     },
+    // ts: {
+    //     timestamps: true
+    // },
     tokens: [{
         type: String,
         required: true
     }]
+}, {
+    timestamps: true
 })
 
 // virtual relation

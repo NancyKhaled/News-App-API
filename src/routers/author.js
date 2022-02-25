@@ -36,6 +36,8 @@ router.post('/login', async (req, res) => {
 
 //profile
 router.get('/profile', auth.authorAuth, async (req, res) => {
+    //const doc = await Author.create(req.author)
+    //res.status(200).send(req.author, doc.createdAt, doc.updatedAt)
     res.status(200).send(req.author)
 })
 
