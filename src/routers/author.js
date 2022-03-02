@@ -16,7 +16,7 @@ router.post('/signUp', async (req, res) => {
             token
         })
     } catch (e) {
-        res.status(400).send(e.message)
+        res.status(400).send(e)
     }
 })
 
@@ -30,14 +30,12 @@ router.post('/login', async (req, res) => {
             token
         })
     } catch (e) {
-        res.status(400).send(e.message)
+        res.status(400).send(e)
     }
 })
 
 //profile
 router.get('/profile', auth.authorAuth, async (req, res) => {
-    //const doc = await Author.create(req.author)
-    //res.status(200).send(req.author, doc.createdAt, doc.updatedAt)
     res.status(200).send(req.author)
 })
 
@@ -53,7 +51,7 @@ router.patch('/profile', auth.authorAuth, async (req, res) => {
 
         res.status(200).send(req.author)
     } catch (e) {
-        res.status(400).send(e.message)
+        res.status(400).send(e)
     }
 })
 
@@ -67,7 +65,7 @@ router.delete('/profile', auth.authorAuth, async (req, res) => {
         }
         res.status(200).send(req.author)
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send(e)
     }
 })
 
@@ -80,7 +78,7 @@ router.delete('/logout', auth.authorAuth, async (req, res) => {
         await req.author.save()
         res.send('Logout successfully.')
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send(e)
     }
 })
 
@@ -91,7 +89,7 @@ router.delete('/logoutAll', auth.authorAuth, async (req, res) => {
         await req.author.save()
         res.send()
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send(e)
     }
 })
 
@@ -113,7 +111,7 @@ router.post('/profile/avatar', auth.authorAuth, uploads.single('avatar'), async 
         await req.author.save()
         res.send()
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send(e)
     }
 })
 

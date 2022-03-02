@@ -65,15 +65,14 @@ const authorSchema = new mongoose.Schema({
         enum: ['admin', 'author'],
         default: 'author'
     },
-    // ts: {
-    //     timestamps: true
-    // },
     tokens: [{
         type: String,
         required: true
     }]
 }, {
-    timestamps: true
+    timestamps: {
+        currentTime: () => new Date().getTime() + (2 * 60 * 60 * 1000)
+    }
 })
 
 // virtual relation
@@ -116,6 +115,18 @@ authorSchema.methods.generateToken = async function () {
     author.tokens = author.tokens.concat(token)
     await author.save()
     return token
+}
+
+// hide private data
+authorSchema.methods.toJSON = function () {
+    const autho = this
+
+    const authoObject = autho.toObject()
+
+    delete authorObject.password
+    delete authoObject.tokens
+
+    return authoObject
 }
 
 const Author = mongoose.model('Author', authorSchema)

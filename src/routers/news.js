@@ -15,7 +15,7 @@ router.post('/news', auth.authorAuth, async (req, res) => {
         await news.save()
         res.status(200).send(news)
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send(e)
     }
 })
 
@@ -25,7 +25,7 @@ router.get('/allNews', auth.authorAuth, auth.requireAdmin, async (req, res) => {
         const news = await News.find({})
         res.status(200).send(news)
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send(e)
     }
 })
 
@@ -42,7 +42,7 @@ router.get('/news/:id', auth.authorAuth, auth.requireAdmin, async (req, res) => 
         }
         res.status(200).send(news)
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send(e)
     }
 })
 
@@ -52,7 +52,7 @@ router.get('/news', auth.authorAuth, async (req, res) => {
         await req.author.populate('news')
         res.status(200).send(req.author.news)
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send(e)
     }
 })
 
@@ -72,7 +72,7 @@ router.patch('/news/:id', auth.authorAuth, async (req, res) => {
         }
         res.status(200).send(task)
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send(e)
     }
 })
 
@@ -89,7 +89,7 @@ router.delete('/news/:id', auth.authorAuth, async (req, res) => {
         }
         res.status(200).send(news)
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send(e)
     }
 })
 
@@ -107,7 +107,7 @@ router.get('/authorNews/:id', auth.authorAuth, async (req, res) => {
         await news.populate('owner')
         res.status(200).send(news.owner)
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send(e)
     }
 })
 
@@ -137,7 +137,7 @@ router.post('/news/:id', auth.authorAuth, uploads.single('image'), async (req, r
         await news.save()
         res.send()
     } catch (e) {
-        res.status(500).send(e.message)
+        res.status(500).send(e)
     }
 })
 
