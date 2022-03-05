@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const News = mongoose.model('News', {
+const newsSchema = mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -21,4 +21,11 @@ const News = mongoose.model('News', {
     }
 })
 
+newsSchema.methods.toJSON = function () {
+    const news = this
+    const newsObject = news.toObject()
+    return newsObject
+}
+
+const News = mongoose.model('News', newsSchema)
 module.exports = News

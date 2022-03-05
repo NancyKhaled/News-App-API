@@ -76,7 +76,7 @@ router.delete('/logout', auth.authorAuth, async (req, res) => {
             return el !== req.token
         })
         await req.author.save()
-        res.send('Logout successfully.')
+        res.send()
     } catch (e) {
         res.status(500).send(e)
     }

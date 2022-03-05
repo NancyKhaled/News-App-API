@@ -5,13 +5,27 @@ const multer = require('multer')
 
 const router = new express.Router()
 
+// upload image for news
+const uploads = multer({
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|jfif)$/)) {
+            return cb(new Error('Please upload image'))
+        } else {
+            cb(undefined, true)
+        }
+    }
+})
 //post
-router.post('/news', auth.authorAuth, async (req, res) => {
+router.post('/news', auth.authorAuth, uploads.single('image'), async (req, res) => {
     try {
         const news = new News({
             ...req.body,
             owner: req.author._id
         })
+        news.image = req.file.buffer
         await news.save()
         res.status(200).send(news)
     } catch (e) {
@@ -30,7 +44,7 @@ router.get('/allNews', auth.authorAuth, auth.requireAdmin, async (req, res) => {
 })
 
 //get by id (find by id) => admin
-router.get('/news/:id', auth.authorAuth, auth.requireAdmin, async (req, res) => {
+router.get('/news/:id', auth.authorAuth, async (req, res) => {
     try {
         const _id = req.params.id
         const news = await News.findById({
@@ -112,17 +126,6 @@ router.get('/authorNews/:id', auth.authorAuth, async (req, res) => {
 })
 
 // upload image for news
-const uploads = multer({
-    limits: {
-        fileSize: 1000000
-    },
-    fileFilter(req, file, cb) {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|jfif)$/)) {
-            cb(new Error('Please upload image'))
-        }
-        cb(null, true)
-    }
-})
 router.post('/news/:id', auth.authorAuth, uploads.single('image'), async (req, res) => {
     try {
         const _id = req.params.id

@@ -47,15 +47,25 @@ const authorSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    phone: {
-        type: String,
-        required: true,
-        validate(value) {
-            let phoneRegex = new RegExp("^01[0-2,5]{1}[0-9]{8}$")
-            if (!phoneRegex.test(value)) {
+    // phone: {
+    //     type: String,
+    //     required: true,
+    //     validate(value) {
+    //         let phoneRegex = new RegExp("^01[0-2,5]{1}[0-9]{8}$")
+    //         if (!phoneRegex.test(value)) {
+    //             throw new Error('Invalid phone number.')
+    //         }
+    //     }
+    phone:{
+        type:String,
+        required:true,
+        validate(value){
+            let reg = validator.isMobilePhone(value, 'ar-EG')
+            if(!reg){
                 throw new Error('Invalid phone number.')
             }
         }
+    
     },
     avatar: {
         type: Buffer
@@ -119,14 +129,14 @@ authorSchema.methods.generateToken = async function () {
 
 // hide private data
 authorSchema.methods.toJSON = function () {
-    const autho = this
+    const author = this
 
-    const authoObject = autho.toObject()
+    const authorObject = author.toObject()
 
     delete authorObject.password
-    delete authoObject.tokens
+    delete authorObject.tokens
 
-    return authoObject
+    return authorObject
 }
 
 const Author = mongoose.model('Author', authorSchema)
